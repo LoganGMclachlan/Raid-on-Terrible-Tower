@@ -1,3 +1,5 @@
+import readline from "node:readline"
+
 export default class Player{
 
     constructor(name,class_){
