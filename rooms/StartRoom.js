@@ -15,7 +15,9 @@ async function StartRoom(){
 
     await selectName()
     await selectClass()
-    console.log(`Well met ${playerName} the ${playerClass}.`)
+    console.log(`Well met ${playerName} the ${playerClass}.\n`)
+
+    await inquirer.prompt([{message: "You are now ready to enter the tower, press enter to proceed.\n"}])
 
     return new Player(playerName,playerClass)
 }
@@ -44,11 +46,11 @@ const selectClass = async () => {
 
     await inquirer.prompt([{
         name: "user_class",
-        message: "Select your Class:",
+        message: "Select your Class:\n",
         type: "list",
         choices: ["Fighter","Mage","Thief"]
     }])
-    .then(async answer => {
+    .then(answer => {
         playerClass = answer.user_class
         console.log("")
     })
