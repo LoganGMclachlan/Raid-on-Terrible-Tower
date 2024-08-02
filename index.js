@@ -11,7 +11,7 @@ let player = await start()
 console.log("You approach the tower in the dead of night, a flash of lightning\n" +
             "illuminates the foul structure. As you look up you behold a dark cloud\n" +
             "obscuring the peak, your destination. The evil held within the tower\n" +
-            "must be destroyed, so you steel yourself, and enter."
+            "must be destroyed, so you steel yourself, and enter.\n"
 )
 await sleep(5000)
 
