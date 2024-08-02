@@ -51,7 +51,7 @@ const selectClass = async () => {
         choices: ["Fighter","Mage","Thief"]
     }])
     .then(answer => {
-        playerClass = answer.user_class
+        playerClass = answer.user_class.toLowerCase()
         console.log("")
     })
 }

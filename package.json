@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "scripts": {
-        "start": "node StartGame.js"
+        "start": "node ."
     },
     "dependencies": {
         "inquirer": "^10.1.6"

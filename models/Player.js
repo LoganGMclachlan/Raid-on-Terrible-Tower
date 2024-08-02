@@ -1,4 +1,4 @@
-import readline from "node:readline"
+import Weapon from "./Weapon.js"
 
 export default class Player{
 
@@ -9,16 +9,16 @@ export default class Player{
         this.mana = 10
         this.spells = []
         this.items = []
-        switch(class_){//TODO: set weapons, spells, and items as object
+        switch(class_){
             case "fighter":
-                this.weapon = "rusty sword"
+                this.weapon = new Weapon("Rusty Sword",2,5)
                 break
             case "mage":
-                this.weapon = "none"
-                this.spells.push("firebolt")
+                this.weapon = new Weapon("None",1,0)
+                this.spells.push(new Spell("Firebolt","Deals 3-4 damage to target",2))
                 break
             case "thief":
-                this.weapon = "rusty dagger"
+                this.weapon = new Weapon("Rusty Dagger",2,3)
         }
     }
 
@@ -69,28 +69,6 @@ export default class Player{
         console.log("Current weapon: " + this.weapon.getDetails())
         console.log("New weapon: " + weaponObj.getDetails())
 
-        //TODO: install and import readline
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        })
-        let decisionMade = false
-        let message = "Are you sure you want to switch to the new weapon? (Y/N)"
-        
-        while(!decisionMade){
-            rl.question(message, input => {
-                if(input.toLowerCase() === "y" || input.toLowerCase() === "yes"){
-                    this.weapon = weaponObj
-                    decisionMade = true
-                    console.log("Equipping new weapon.")
-                }
-                else if(input.toLowerCase() === "n" || input.toLowerCase() === "no"){
-                    decisionMade = true
-                    console.log("New weapon discarded.")
-                }
-                else{message = "Response not recognised, please input 'yes' or 'no'"}
-            })
-        }
-        rl.close()
+        //TODO: ask user if they want to replace weapon or not
     }
 }
