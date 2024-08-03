@@ -7,18 +7,21 @@ export default class weapon{
     }
 
     getDetails(){
-        return `${this.title} | deals ${this.damage} damage | will break in ${this.durability} hits`
+        return `${this.title} | deals +${this.damage} damage | will break in ${this.durability} hits`
     }
 
-    attack(enemyObj){
+    attack(){
         // damages weapon if applicable
-        if(this.title !== "None"){this.durability -= 1}
-        enemyObj.damage(this.damage)
-        // notifies player when weapon breaks
-        if(this.durability <= 0 && this.title !== "None"){
-            console.log(`Your ${this.title} has broken.`)
-            this.title = "None"
-            this.damage = 1
+        if(this.title !== "None"){
+            this.durability -= 1
+            // notifies player when weapon breaks
+            if(this.durability === 0){
+                console.log(`Your ${this.title} has broken.`)
+                this.title = "None"
+                this.damage = 0
+            }
+        
         }
+        
     }
 }

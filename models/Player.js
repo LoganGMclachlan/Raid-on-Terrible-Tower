@@ -1,3 +1,4 @@
+import inquirer from "inquirer"
 import Weapon from "./Weapon.js"
 
 export default class Player{
@@ -9,16 +10,17 @@ export default class Player{
         this.mana = 10
         this.spells = []
         this.items = []
+        this.baseDamage = 1
         switch(class_){
             case "fighter":
-                this.weapon = new Weapon("Rusty Sword",2,5)
+                this.weapon = new Weapon("Rusty Sword",1,5)
                 break
             case "mage":
-                this.weapon = new Weapon("None",1,0)
+                this.weapon = new Weapon("None",0,0)
                 this.spells.push(new Spell("Firebolt","Deals 3-4 damage to target",2))
                 break
             case "thief":
-                this.weapon = new Weapon("Rusty Dagger",2,3)
+                this.weapon = new Weapon("Rusty Dagger",1,3)
         }
     }
 
@@ -38,12 +40,23 @@ export default class Player{
     useItem(item){
         switch(item){
             case "Apple":
-                this.hp += 1
+                this.hitPoints += 1
                 break
             case "Slice of Pie":
-                this.hp += 2
+                this.hitPoints += 2
                 break
-            //TODO: add effects for other items
+            case "Elixer of Health":
+                this.hitPoints += 3
+                break
+            case "Elixar of Mana":
+                this.mana += 5
+                break
+            case "Elixer of Martial Superiority":
+                this.baseDamage += 1
+                break
+            default:
+                console.log("Item not found")
+                return
         }
         // removes item from items list
         this.items.map((i,index) => {if(i.title === item) this.items.splice(index,1)})
@@ -62,10 +75,20 @@ export default class Player{
         return this.spells.includes(spellObj)
     }
 
-    switchWeapon(weaponObj){
+    async switchWeapon(weaponObj){
         console.log("Current weapon: " + this.weapon.getDetails())
         console.log("New weapon: " + weaponObj.getDetails())
 
-        //TODO: ask user if they want to replace weapon or not
+        await inquirer.prompt([{
+            name: "confirmed",
+            message: "Are you sure you want to replace your current weapon?\n",
+            type: "confirm",
+        }])
+        .then(answer => {
+            if(answer.confirmed){
+                this.weapon = weaponObj
+                console.log(`Equipped new weapon: ${weaponObj}`)
+            }
+        })
     }
 }

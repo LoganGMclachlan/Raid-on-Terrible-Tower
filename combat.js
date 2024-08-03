@@ -56,7 +56,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     let target = await selectEnemy()
                     enemies.map(enemy => {
                         if(enemy.name === target){
-                            enemy.hitPoints -= player.weapon.damage
+                            enemy.hitPoints -= (player.baseDamage + player.weapon.damage)
                             player.weapon.attack()// handles durability
                         }
                     })

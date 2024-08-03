@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { rollSkillCheck } from "../utils.js"
+import { rollSkillCheck, selectUseItem } from "../utils.js"
 
 async function kennels(player){
     const kennelEnemies = []
@@ -30,14 +30,20 @@ async function kennels(player){
                 case "Steal the item (medium difficulty)":
                     await stealItem()
                     break
-                case "Check Inventory":
+                case "Check Character":
                     player.getStatus()
                     player.listItems()
                     player.listSpells()
                     await getDecision()
                     break
                 case "Use Item":
-                    //TODO: create function to choose item
+                    let consumables = player.item.filter(i => i.type === "consumable")
+                    if(consumables.length === 0){
+                        console.log("You have no consumable items to use.\n")
+                        await playerTurn(itemUsed)
+                    }else{
+                        player = await selectUseItem(player)
+                    }
                     await getDecision()
                     break
             }
@@ -63,7 +69,9 @@ const sneakToExit = async () => {
 const stealItem = async () => {
     if(rollSkillCheck(11)){
         console.log("You succesfully steal the item without alerting the dogs.")
-        //TODO: add item to player inventory
+        
+
+
         await inquirer.prompt([{
             name: "user_decision",
             message: "You can leave the room without being detected, or you can stay and attack the dogs. What do you do?\n",

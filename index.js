@@ -17,4 +17,5 @@ await sleep(5000)
 
 const roomList = randomiseRoomList(8)
 
-roomList.map(room => room(player))
+// loops through each room, updating player data
+roomList.map(room => player = room(player))
