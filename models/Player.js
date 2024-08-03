@@ -35,13 +35,8 @@ export default class Player{
         this.items.push(itemObj)
     }
 
-    useItem(itemObj){
-        if(itemObj.type !== "consumable"){
-            console.log("Select a consumable item to use.")
-            return
-        }
-
-        switch(itemObj.title){
+    useItem(item){
+        switch(item){
             case "Apple":
                 this.hp += 1
                 break
@@ -50,6 +45,8 @@ export default class Player{
                 break
             //TODO: add effects for other items
         }
+        // removes item from items list
+        this.items.map((i,index) => {if(i.title === item) this.items.splice(index,1)})
     }
 
     checkItem(itemObj){

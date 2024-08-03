@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { rollSkillCheck } from "./utils"
+import { rollSkillCheck, selectUseItem } from "./utils"
 
 
 async function combat(player,enemies,firstToStrike=false,round=0){
@@ -62,7 +62,12 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     })
                     break
                 case "Use Item":
-                    //TODO: create "selectItem" function
+                    let consumables = player.item.filter(i => i.type === "consumable")
+                    if(consumables.length === 0){
+                        console.log("You have no consumable items to use.\n")
+                        await playerTurn(itemUsed)
+                    }
+                    player = await selectUseItem(player)
                     if(!itemUsed){
                         console.log("Using your first item usage costs no action, your next one this turn will.")
                         await playerTurn(true)}

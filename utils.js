@@ -6,3 +6,19 @@ export const rollSkillCheck = (dc=11) => {
     const roll = Math.floor(Math.random() * 20) + 1
     return roll >= dc
 }
+
+export const selectUseItem = async player => {
+    // creates list of cunsumable items to show player
+    let itemsOptions = []; player.items.map(item => {if(item.type === "consumable") itemsOptions.push(item.title)})
+    await inquirer.prompt([{
+        name: "user_choice",
+        message: "What item do you want to use?\n",
+        type: "list",
+        options: itemsOptions
+    }])
+    .then(answer => {
+        // uses item and removes it
+        player.useItem(answer.use_choice)
+    })
+    return player
+}
