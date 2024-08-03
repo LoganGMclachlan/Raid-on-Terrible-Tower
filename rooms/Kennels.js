@@ -1,8 +1,13 @@
 import inquirer from "inquirer"
 import { rollSkillCheck, selectUseItem } from "../utils.js"
+import Enemy from "../models/Enemy.js"
 
 async function kennels(player){
-    const kennelEnemies = []
+    const kennelEnemies = [
+        new Enemy("Dog #1","2","1"),
+        new Enemy("Dog #2","2","1"),
+        new Enemy("Dog #3","2","1")
+    ]
     console.log("The room you enter is home to 3 guard dogs, currently sleeping\n" +
                 "in thier kennels. In one of them you spot an item.\n")
 
