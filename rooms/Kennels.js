@@ -2,30 +2,47 @@ import inquirer from "inquirer"
 import { rollSkillCheck } from "../utils.js"
 
 async function kennels(player){
+    const kennelEnemies = []
     console.log("The room you enter is home to 3 guard dogs, currently sleeping\n" +
                 "in thier kennels. In one of them you spot an item.\n")
 
-    await inquirer.prompt([{
-        name: "user_command",
-        message: "What do you do?\n",
-        type: "list",
-        choices: ["Sneak past the dogs (low difficulty)",
-            "Attack the dogs (start combat)",
-            "Steal the item (medium difficulty)"]
-    }])
-    .then(async answer => {
-        switch(answer.user_command){
-            case "Sneak past the dogs (low difficulty)":
-                await sneakToExit()
-                break
-            case "Attack the dogs (start combat)":
-                //TODO: start combat
-                break
-            case "Steal the item (medium difficulty)":
-                await stealItem()
-                break
-        }
-    })
+    await getDecision()
+
+    const getDecision = async () => {
+        await inquirer.prompt([{
+            name: "user_command",
+            message: "What do you do?\n",
+            type: "list",
+            choices: ["Sneak past the dogs (low difficulty)",
+                "Attack the dogs (start combat)",
+                "Steal the item (medium difficulty)",
+                "Check Character","Use Item"]
+        }])
+        .then(async answer => {
+            switch(answer.user_command){
+                case "Sneak past the dogs (low difficulty)":
+                    await sneakToExit()
+                    break
+                case "Attack the dogs (start combat)":
+                    console.log("You attack the dogs and begin combat.\n")
+                    await combat(player,kennelEnemies,true)
+                    break
+                case "Steal the item (medium difficulty)":
+                    await stealItem()
+                    break
+                case "Check Inventory":
+                    player.getStatus()
+                    player.listItems()
+                    player.listSpells()
+                    await getDecision()
+                    break
+                case "Use Item":
+                    //TODO: create function to choose item
+                    await getDecision()
+                    break
+            }
+        })
+    }
 
     return player
 }
@@ -38,7 +55,7 @@ const sneakToExit = async () => {
         console.log("Your sneak atttempt has failed and you have awoken the dogs.\n" +
                     "They immedietely attack you."
         )
-        //TODO: add combat section
+        await combat(player,kennelEnemies)
         return
     }
 }
@@ -53,9 +70,9 @@ const stealItem = async () => {
             type: "list",
             options: ["Leave","Stay"]
         }])
-        .then(answer => {
+        .then(async answer => {
             if(answer.user_decision = "Stay"){
-                //TODO: Start combat
+                await combat(player,kennelEnemies,true)
             }
         })
         return
@@ -63,7 +80,7 @@ const stealItem = async () => {
         console.log("Your atttempt to steal the item has failed and you have awoken the dogs.\n" +
                     "They immedietely attack you."
         )
-        //TODO: add combat section
+        await combat(player,kennelEnemies)
         return
     }
 }
