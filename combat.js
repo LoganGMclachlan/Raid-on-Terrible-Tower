@@ -42,7 +42,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     enemies.map(enemy => {
                         if(enemy.name === target){
                             let damage = player.baseDamage + player.weapon.damage
-                            if(round === 0 && player.class === "thief") damage+=2
+                            if(round === 0 && player.class_ === "thief") damage+=2
                             enemy.hitPoints -= damage
                             if(enemy.hitPoints <= 0){
                                 enemies.splice(enemy,1)
@@ -87,7 +87,10 @@ async function combat(player,enemies,firstToStrike=false,round=0){
         console.log("Your turn.\n")
         await playerTurn()
         await enemiesTurn()
-        if(enemiesDefeated()){return player}
+        if(enemiesDefeated()){
+            if(player.class_ === "fighter") player.hitPoints++
+            return player
+        }
         else{await combat(player,enemies,firstToStrike,round++)}
     }else{
         await enemiesTurn()

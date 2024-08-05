@@ -7,8 +7,8 @@ import Player from "./models/Player.js"
 const sleep = (ms=1000) => new Promise(resolve => setTimeout(resolve, ms))
 
 // calls start room and gets player info
-//let player = await start()
-let player = new Player("Test","fighter")
+let player = await start()
+//let player = new Player("Test","fighter") // skip intro for testing
 
 
 console.log("You approach the tower in the dead of night, a flash of lightning\n" +
@@ -16,7 +16,7 @@ console.log("You approach the tower in the dead of night, a flash of lightning\n
             "obscuring the peak, your destination. The evil held within the tower\n" +
             "must be destroyed, so you steel yourself, and enter.\n"
 )
-await sleep(1000)
+await sleep(5000)// set to 5000 when not testing
 
 const roomList = randomiseRoomList(1)
 
@@ -24,4 +24,5 @@ const roomList = randomiseRoomList(1)
 roomList.map(room => {
     player = room(player)
     //TODO: give player a random item
+    if(player.class_ === "mage") player.mana++
 })

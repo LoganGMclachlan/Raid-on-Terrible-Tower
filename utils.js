@@ -4,7 +4,6 @@ export const rollSkillCheck = (dc=11) => {
     // medium = 11 (%50 to succeed)
     // high = 15 (%30 to succeed)
     const roll = Math.floor(Math.random() * 20) + 1
-    console.log(roll)
     return roll >= dc
 }
 
