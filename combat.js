@@ -1,22 +1,7 @@
 import inquirer from "inquirer"
-import { rollSkillCheck, selectUseItem } from "./utils"
-
+import { rollSkillCheck, selectUseItem } from "./utils.js"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
-    if(firstToStrike){
-        console.log("Your turn.\n")
-        await playerTurn()
-        await enemiesTurn()
-        if(enemiesDefeated()){return player}
-        else{await combat(player,enemies,firstToStrike,round++)}
-    }else{
-        await enemiesTurn()
-        console.log("Your turn.\n")
-        await playerTurn()
-        if(enemiesDefeated()){return player}
-        else{await combat(player,enemies,firstToStrike,round++)}
-    }
-
     const enemiesDefeated = () => {
         if(enemies.length === 0){
             console.log("VICTORY! All enemies have been defeated.")
@@ -31,7 +16,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
             name: "user_target",
             message: "What enemy do you target?\n",
             type: "list",
-            options: targetsOptions
+            choices: targetsOptions
         }])
         .then(async answer => {
             choice = answer.user_target
@@ -48,7 +33,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
             name: "user_action",
             message: "What do you do?\n",
             type: "list",
-            options: actions
+            choices: actions
         }])
         .then(async answer => {
             switch(answer.user_action){
@@ -56,20 +41,26 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     let target = await selectEnemy()
                     enemies.map(enemy => {
                         if(enemy.name === target){
-                            enemy.hitPoints -= (player.baseDamage + player.weapon.damage)
+                            let damage = player.baseDamage + player.weapon.damage
+                            if(round === 0 && player.class === "thief") damage+=2
+                            enemy.hitPoints -= damage
+                            if(enemy.hitPoints <= 0){
+                                enemies.splice(enemy,1)
+                                console.log(`${enemy.name} has been defeated.\n`)
+                            }
                             player.weapon.attack()// handles durability
                         }
                     })
                     break
                 case "Use Item":
-                    let consumables = player.item.filter(i => i.type === "consumable")
+                    let consumables = player.items.filter(item => item.type === "consumable")
                     if(consumables.length === 0){
                         console.log("You have no consumable items to use.\n")
                         await playerTurn(itemUsed)
                     }
                     player = await selectUseItem(player)
                     if(!itemUsed){
-                        console.log("Using your first item usage costs no action, your next one this turn will.")
+                        console.log("Using your first item usage costs no action, your next one this turn will.\n")
                         await playerTurn(true)}
                     break
                 case "Cast Spell":
@@ -89,7 +80,21 @@ async function combat(player,enemies,firstToStrike=false,round=0){
             }
         })
         // displays current hp at end of enemy turn
-        console.log(`You are now at ${player.hitPoints} hp.\n`)
+        console.log(`Current HP: ${player.hitPoints}\n`)
+    }
+
+    if(firstToStrike){
+        console.log("Your turn.\n")
+        await playerTurn()
+        await enemiesTurn()
+        if(enemiesDefeated()){return player}
+        else{await combat(player,enemies,firstToStrike,round++)}
+    }else{
+        await enemiesTurn()
+        console.log("Your turn.\n")
+        await playerTurn()
+        if(enemiesDefeated()){return player}
+        else{await combat(player,enemies,firstToStrike,round++)}
     }
 }
 

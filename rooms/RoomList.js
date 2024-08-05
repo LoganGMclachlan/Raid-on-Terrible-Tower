@@ -1,15 +1,8 @@
-
+import Kennels from "./Kennels.js"
 
 // list of all rooms (exluding start and boss rooms)
 const allRooms = [
-    () => console.log("room 1"),
-    () => console.log("room 2"),
-    () => console.log("room 3"),
-    () => console.log("room 4"),
-    () => console.log("room 5"),
-    () => console.log("room 6"),
-    () => console.log("room 7"),
-    () => console.log("room 8"),
+    Kennels
 ]
 
 // function to return list of randomly selected rooms

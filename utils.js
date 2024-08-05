@@ -4,6 +4,7 @@ export const rollSkillCheck = (dc=11) => {
     // medium = 11 (%50 to succeed)
     // high = 15 (%30 to succeed)
     const roll = Math.floor(Math.random() * 20) + 1
+    console.log(roll)
     return roll >= dc
 }
 
@@ -14,7 +15,7 @@ export const selectUseItem = async player => {
         name: "user_choice",
         message: "What item do you want to use?\n",
         type: "list",
-        options: itemsOptions
+        choices: itemsOptions
     }])
     .then(answer => {
         // uses item and removes it
