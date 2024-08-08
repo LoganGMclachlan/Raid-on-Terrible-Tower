@@ -22,3 +22,19 @@ export const selectUseItem = async player => {
     })
     return player
 }
+
+export const selectSpell = async spellList => {
+    let spellOptions = []
+    spellList.map(spell => spellOptions.push(spell.title))
+    spellList.push("No spell, return")
+    await inquirer.prompt([{
+        name: "user_choice",
+        message: "What spell do you want to cast?\n",
+        type: "list",
+        choices: spellOptions
+    }])
+    .then(answer => {
+        return answer.user_choice
+    })
+    .catch(() => {return "No spell, return"})
+}

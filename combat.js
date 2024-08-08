@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { rollSkillCheck, selectUseItem } from "./utils.js"
+import { rollSkillCheck, selectSpell, selectUseItem } from "./utils.js"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
     const enemiesDefeated = () => {
@@ -24,7 +24,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
         return choice
     }
 
-    const playerTurn = async (itemUsed=false) => {
+    const playerTurn = async (freeAction=true) => {
         let actions = ["Attack"]
         player.spells.length > 0 ? actions.push("Cast Spell") :
         player.items.length > 0 ? actions.push("Use Item") :
@@ -56,15 +56,44 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     let consumables = player.items.filter(item => item.type === "consumable")
                     if(consumables.length === 0){
                         console.log("You have no consumable items to use.\n")
-                        await playerTurn(itemUsed)
+                        await playerTurn(freeAction)
                     }
                     player = await selectUseItem(player)
-                    if(!itemUsed){
-                        console.log("Using your first item usage costs no action, your next one this turn will.\n")
-                        await playerTurn(true)}
+                    if(freeAction){
+                        console.log("Using an item uses your free action, you still have your main action to use.\n")
+                        await playerTurn(false)}
                     break
                 case "Cast Spell":
-                    //TODO: create "selectSpell" function
+                    const spell = await selectSpell(player.spells)
+                    switch(spell){
+                        case "Firebolt":
+                            player.mana -= 2
+                            const target = await selectEnemy()
+                            enemies.map(enemy => {
+                                if(enemy.name === target){
+                                    // deals 3-4 damage
+                                    const damage = 3 + Math.floor(Math.random() * 2)
+                                    enemy.hitPoints -= damage
+                                    if(enemy.hitPoints <= 0){
+                                        enemies.splice(enemy,1)
+                                        console.log(`${enemy.name} has been defeated.\n`)
+                                    }
+                                }
+                            })
+                            break
+                        case "Heal":
+                            // heals 3-5hp
+                            player.hitPoints += 3 + Math.floor(Math.random() * 3)
+                            if(freeAction){
+                                console.log("Casting heal uses your free action, you still have your main action to use.\n")
+                                await playerTurn(false)}
+                            break
+                            //TODO: add other spell cases: vampiric touch, magic missile, fireball, conjure weapon
+                        case "No spell, return":
+                            console.log("No Spell was cast.\n")
+                            await playerTurn(itemUsed)
+                            break
+                    }
             }
         })
     }

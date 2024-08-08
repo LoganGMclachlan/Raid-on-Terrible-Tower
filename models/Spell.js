@@ -4,6 +4,7 @@ export default class Spell{
         this.title = title
         this.description = desc
         this.cost = cost
+        this.type = type // can be combat, utility, or flexable(both)
     }
 
     getDetails(){
