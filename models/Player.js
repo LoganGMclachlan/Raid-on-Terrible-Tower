@@ -76,6 +76,11 @@ export default class Player{
     }
 
     async switchWeapon(weaponObj){
+        if(this.weapon === "None"){
+            this.weapon = weaponObj
+            console.log(`Equipped new weapon: ${weaponObj}`)
+            return
+        }
         console.log("Current weapon: " + this.weapon.getDetails())
         console.log("New weapon: " + weaponObj.getDetails())
 
@@ -89,6 +94,8 @@ export default class Player{
                 this.weapon = weaponObj
                 console.log(`Equipped new weapon: ${weaponObj}`)
             }
+            // refunds mana cost of conjure weapon if not equipped
+            else if(weaponObj.title === "Magic Sword") this.mana += 3
         })
     }
 }

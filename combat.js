@@ -1,5 +1,6 @@
 import inquirer from "inquirer"
 import { rollSkillCheck, selectSpell, selectUseItem } from "./utils.js"
+import weapon from "./models/Weapon.js"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
     const enemiesDefeated = () => {
@@ -68,12 +69,13 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                     switch(spell){
                         case "Firebolt":
                             player.mana -= 2
-                            const target = await selectEnemy()
+                            let fireboltTarget = await selectEnemy()
                             enemies.map(enemy => {
-                                if(enemy.name === target){
+                                if(enemy.name === fireboltTarget){
                                     // deals 3-4 damage
                                     const damage = 3 + Math.floor(Math.random() * 2)
                                     enemy.hitPoints -= damage
+                                    console.log(`${damage} damage dealt to ${enemy.name}.\n`)
                                     if(enemy.hitPoints <= 0){
                                         enemies.splice(enemy,1)
                                         console.log(`${enemy.name} has been defeated.\n`)
@@ -82,13 +84,66 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                             })
                             break
                         case "Heal":
+                            player.mana -= 3
                             // heals 3-5hp
-                            player.hitPoints += 3 + Math.floor(Math.random() * 3)
+                            const healing = 3 + Math.floor(Math.random() * 3)
+                            player.hitPoints += healing
+                            console.log(`You heal for ${healing} hit points.\n`)
                             if(freeAction){
                                 console.log("Casting heal uses your free action, you still have your main action to use.\n")
-                                await playerTurn(false)}
+                                await playerTurn(false)
+                            }
                             break
-                            //TODO: add other spell cases: vampiric touch, magic missile, fireball, conjure weapon
+                        case "Vampiric Touch":
+                            player.mana -= 4
+                            let vampTouchTarget = await selectEnemy()
+                            enemies.map(enemy => {
+                                if(enemy.name === vampTouchTarget){
+                                    // deals 3-4 damage
+                                    const damage = 3 + Math.floor(Math.random() * 2)
+                                    enemy.hitPoints -= damage
+                                    console.log(`${damage} damage dealt to ${enemy.name}.\n`)
+                                    if(enemy.hitPoints <= 0){
+                                        enemies.splice(enemy,1)
+                                        console.log(`${enemy.name} has been defeated.\n`)
+                                    }
+                                    player.hitPoints += damage
+                                    console.log(`You heal for ${damage} hit points.\n`)
+                                }
+                            })
+                            break
+                        case "Magic Missile":
+                            player.mana -= 3
+                            let missileTarget = await selectEnemy()
+                            enemies.map(enemy => {
+                                if(enemy.name === missileTarget){
+                                    enemy.hitPoints -= 5
+                                    console.log(`5 damage dealt to ${enemy.name}.\n`)
+                                    player.hitPoints += damage
+                                }
+                            })
+                            break
+                        case "Fireball":
+                            player.mana -= 4
+                            console.log("You deal 3 damage to all enemies")
+                            enemies.map(enemy => {
+                                enemy.hitPoints -= 3
+                                if(enemy.hitPoints <= 0){
+                                    enemies.splice(enemy,1)
+                                    console.log(`${enemy.name} has been defeated.\n`)
+                                }
+                            })
+                            break
+                        case "Conjure Weapon":
+                            player.mana -= 3
+                            console.log("You summon a magic sword too your hand")
+                            await player.switchWeapon(new Weapon("Magic Sword",3,4))
+                            console.log(player.weapon.getDetails())
+                            if(freeAction){
+                                console.log("Casting conjure weapon uses your free action, you still have your main action to use.\n")
+                                await playerTurn(false)
+                            }
+                            break
                         case "No spell, return":
                             console.log("No Spell was cast.\n")
                             await playerTurn(itemUsed)
