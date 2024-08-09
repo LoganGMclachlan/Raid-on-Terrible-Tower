@@ -1,3 +1,5 @@
+import inquirer from "inquirer"
+
 export const rollSkillCheck = (dc=11) => {
     // difficuly class (dc) guide
     // low = 7 (%70 to succeed)
@@ -25,8 +27,9 @@ export const selectUseItem = async player => {
 
 export const selectSpell = async spellList => {
     let spellOptions = []
+    let choice = ""
     spellList.map(spell => spellOptions.push(spell.title))
-    spellList.push("No spell, return")
+    spellOptions.push("No spell, return")
     await inquirer.prompt([{
         name: "user_choice",
         message: "What spell do you want to cast?\n",
@@ -34,7 +37,10 @@ export const selectSpell = async spellList => {
         choices: spellOptions
     }])
     .then(answer => {
-        return answer.user_choice
+        choice = answer.user_choice
     })
-    .catch(() => {return "No spell, return"})
+    .catch(err => {
+        console.error(err)
+    })
+    return choice
 }

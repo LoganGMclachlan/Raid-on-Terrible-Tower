@@ -14,8 +14,20 @@ let player = await start()
 console.log("You approach the tower in the dead of night, a flash of lightning\n" +
             "illuminates the foul structure. As you look up you behold a dark cloud\n" +
             "obscuring the peak, your destination. The evil held within the tower\n" +
-            "must be destroyed, so you steel yourself, and enter.\n"
+            "must be destroyed.\n"
 )
+switch(player.class_){
+    case "fighter":
+        console.log("You draw your rusted sword, and enter.\n")
+        break
+    case "mage":
+        console.log("You ready your spells, and enter.\n")
+        break
+    case "thief":
+        console.log("You pull out a rusty dagger, and enter.\n")
+        break
+}
+
 await sleep(5000)// set to 5000 when not testing
 
 const roomList = randomiseRoomList(1)

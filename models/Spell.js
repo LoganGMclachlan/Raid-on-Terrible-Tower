@@ -1,6 +1,6 @@
 export default class Spell{
 
-    constructor(title,desc,cost){
+    constructor(title,desc,cost,type="flexable"){
         this.title = title
         this.description = desc
         this.cost = cost

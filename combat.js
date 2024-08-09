@@ -1,6 +1,6 @@
 import inquirer from "inquirer"
 import { rollSkillCheck, selectSpell, selectUseItem } from "./utils.js"
-import weapon from "./models/Weapon.js"
+import Weapon from "./models/Weapon.js"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
     const enemiesDefeated = () => {
@@ -27,8 +27,8 @@ async function combat(player,enemies,firstToStrike=false,round=0){
 
     const playerTurn = async (freeAction=true) => {
         let actions = ["Attack"]
-        player.spells.length > 0 ? actions.push("Cast Spell") :
-        player.items.length > 0 ? actions.push("Use Item") :
+        if(player.spells.length > 0) actions.push("Cast Spell")
+        if(player.items.length > 0) actions.push("Use Item")
 
         await inquirer.prompt([{
             name: "user_action",
@@ -65,7 +65,8 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                         await playerTurn(false)}
                     break
                 case "Cast Spell":
-                    const spell = await selectSpell(player.spells)
+                    let combatSpells = player.spells.filter(spell => spell.type !== "utility")
+                    let spell = await selectSpell(combatSpells)
                     switch(spell){
                         case "Firebolt":
                             player.mana -= 2
@@ -73,7 +74,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                             enemies.map(enemy => {
                                 if(enemy.name === fireboltTarget){
                                     // deals 3-4 damage
-                                    const damage = 3 + Math.floor(Math.random() * 2)
+                                    let damage = 3 + Math.floor(Math.random() * 2)
                                     enemy.hitPoints -= damage
                                     console.log(`${damage} damage dealt to ${enemy.name}.\n`)
                                     if(enemy.hitPoints <= 0){
@@ -144,10 +145,9 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                                 await playerTurn(false)
                             }
                             break
-                        case "No spell, return":
+                        default:
                             console.log("No Spell was cast.\n")
-                            await playerTurn(itemUsed)
-                            break
+                            await playerTurn(freeAction)
                     }
             }
         })
@@ -170,6 +170,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
     if(firstToStrike){
         console.log("Your turn.\n")
         await playerTurn()
+        player.getStatus()
         await enemiesTurn()
         if(enemiesDefeated()){
             if(player.class_ === "fighter") player.hitPoints++
@@ -180,6 +181,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
         await enemiesTurn()
         console.log("Your turn.\n")
         await playerTurn()
+        player.getStatus()
         if(enemiesDefeated()){return player}
         else{await combat(player,enemies,firstToStrike,round++)}
     }

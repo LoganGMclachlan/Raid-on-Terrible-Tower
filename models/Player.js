@@ -1,5 +1,6 @@
 import inquirer from "inquirer"
 import Weapon from "./Weapon.js"
+import Spell from "./Spell.js"
 
 export default class Player{
 
@@ -17,7 +18,7 @@ export default class Player{
                 break
             case "mage":
                 this.weapon = new Weapon("None",0,0)
-                this.spells.push(new Spell("Firebolt","Deals 3-4 damage to target",2))
+                this.spells.push(new Spell("Firebolt","Deals 3-4 damage to target",2,"combat"))
                 break
             case "thief":
                 this.weapon = new Weapon("Rusty Dagger",1,3)
