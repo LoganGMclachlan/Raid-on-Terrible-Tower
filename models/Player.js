@@ -34,10 +34,6 @@ export default class Player{
         this.items.map(item => console.log(item.getDetails()))
     }
 
-    addItem(itemObj){
-        this.items.push(itemObj)
-    }
-
     useItem(item){
         switch(item){
             case "Apple":
@@ -63,17 +59,9 @@ export default class Player{
         this.items.map((i,index) => {if(i.title === item) this.items.splice(index,1)})
     }
 
-    checkItem(itemObj){
-        return this.items.includes(itemObj)
-    }
-
     listSpells(){
         console.log(`Your know ${this.spells.length} spells`)
         this.spells.map(spell => console.log(spell.getDetails()))
-    }
-
-    checkSpell(spellObj){
-        return this.spells.includes(spellObj)
     }
 
     async switchWeapon(weaponObj){

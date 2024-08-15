@@ -1,11 +1,12 @@
 import inquirer from "inquirer"
+import { conumables, gear } from "./itemsList"
 
 export const rollSkillCheck = (dc=11) => {
     // difficuly class (dc) guide
     // low = 7 (%70 to succeed)
     // medium = 11 (%50 to succeed)
     // high = 15 (%30 to succeed)
-    const roll = Math.floor(Math.random() * 20) + 1
+    const roll = getRandom(20)
     return roll >= dc
 }
 
@@ -44,3 +45,26 @@ export const selectSpell = async spellList => {
     })
     return choice
 }
+
+// randomly selects and adds a new item to a players inventory
+export const addItem = player => {
+    let randomItem
+    if(getRandom(10) <= 7){// 70% chance to get consumable
+        randomItem = conumables[getRandom(conumables.length)-1]
+    }
+    else{
+        let unaquiredGear = gear.filter(item => !player.items.includes(item))
+        // if player has all gear item already, gives them consumable
+        if(unaquiredGear.length === 0){randomItem = conumables[getRandom(conumables.length)-1]}
+        else{
+            randomItem = unaquiredGear[getRandom(unaquiredGear.length)-1]
+        }
+    }
+
+    player.items.push(randomItem)
+    console.log(`Added new item: ${randomItem.getDetails()}`)
+    return player
+}
+
+// returns random number between 1 and max
+const getRandom = max => {return Math.floor(Math.random() * max) + 1}

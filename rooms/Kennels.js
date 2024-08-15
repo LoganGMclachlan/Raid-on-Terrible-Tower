@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { rollSkillCheck, selectUseItem } from "../utils.js"
+import { rollSkillCheck, selectUseItem, addItem } from "../utils.js"
 import Enemy from "../models/Enemy.js"
 import combat from "../combat.js"
 
@@ -31,7 +31,7 @@ async function Kennels(player){
                     console.log("You attack the dogs and begin combat.\n")
                     await combat(player,kennelEnemies,true)
                     console.log("Without the dogs dead, you grab the itemwithout resistance.\n")
-                    //TODO: give player a random item
+                    player = addItem(player)
                     break
                 case "Steal the item (medium difficulty)":
                     await stealItem()
@@ -71,8 +71,7 @@ async function Kennels(player){
     const stealItem = async () => {
         if(rollSkillCheck(11)){
             console.log("You succesfully steal the item without alerting the dogs.")
-            
-            //TODO: give player a random item
+            player = addItem(player)
             
             await inquirer.prompt([{
                 name: "user_decision",
