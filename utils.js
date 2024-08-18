@@ -67,4 +67,4 @@ export const addItem = player => {
 }
 
 // returns random number between 1 and max
-const getRandom = max => {return Math.floor(Math.random() * max) + 1}
+export const getRandom = max => {return Math.floor(Math.random() * max) + 1}

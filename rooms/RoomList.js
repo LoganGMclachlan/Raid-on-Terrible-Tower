@@ -1,8 +1,10 @@
 import Kennels from "./Kennels.js"
+import WitchesLair from "./WitchesLair.js"
 
 // list of all rooms (exluding start and boss rooms)
 const allRooms = [
-    Kennels
+    Kennels,
+    WitchesLair
 ]
 
 // function to return list of randomly selected rooms
