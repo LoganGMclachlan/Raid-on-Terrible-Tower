@@ -75,7 +75,7 @@ export default class Player{
 
         await inquirer.prompt([{
             name: "confirmed",
-            message: "Are you sure you want to replace your current weapon?\n",
+            message: "Would you like to replace your current weapon with the new one?\n",
             type: "confirm",
         }])
         .then(answer => {
