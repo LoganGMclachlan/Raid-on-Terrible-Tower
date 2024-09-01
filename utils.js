@@ -1,5 +1,6 @@
 import inquirer from "inquirer"
 import { conumables, gear } from "./itemsList"
+import weapons from "./weaponList"
 
 export const rollSkillCheck = (dc=11) => {
     // difficuly class (dc) guide
@@ -64,6 +65,10 @@ export const addItem = player => {
     player.items.push(randomItem)
     console.log(`Added new item: ${randomItem.getDetails()}`)
     return player
+}
+
+export const getRandomWeapon = () => {
+    return weapons[getRandom(weapons.length)-1]
 }
 
 // returns random number between 1 and max

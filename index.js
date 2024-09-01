@@ -1,7 +1,7 @@
 #!usr/bin/env node
 import randomiseRoomList from "./rooms/RoomList.js"
 import start from "./rooms/StartRoom.js"
-import Player from "./models/Player.js"
+import { addItem } from "./utils.js"
 
 // function to pause game for a duration
 const sleep = (ms=1000) => new Promise(resolve => setTimeout(resolve, ms))

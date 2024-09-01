@@ -1,6 +1,7 @@
 import inquirer from "inquirer"
 import { rollSkillCheck, selectSpell, selectUseItem } from "./utils.js"
 import Weapon from "./models/Weapon.js"
+import process from "node:process"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
     const enemiesDefeated = () => {
@@ -163,8 +164,14 @@ async function combat(player,enemies,firstToStrike=false,round=0){
                 player.hitPoints -= damage
             }
         })
-        // displays current hp at end of enemy turn
-        console.log(`Current HP: ${player.hitPoints}\n`)
+        if(player.hitPoints > 0){
+            // displays current hp at end of enemy turn
+            console.log(`Current HP: ${player.hitPoints}\n`)
+        }else{
+            console.log("You have died. The evil of terrable tower is free to conqure the world, and its allyour fault.")
+            //todo: save player/run details to txt file
+            process.exit(0)// stops program upon player death
+        }
     }
 
     if(firstToStrike){
@@ -172,19 +179,18 @@ async function combat(player,enemies,firstToStrike=false,round=0){
         await playerTurn()
         player.getStatus()
         await enemiesTurn()
-        if(enemiesDefeated()){
-            if(player.class_ === "fighter") player.hitPoints++
-            return player
-        }
-        else{await combat(player,enemies,firstToStrike,round++)}
     }else{
         await enemiesTurn()
         console.log("Your turn.\n")
         await playerTurn()
         player.getStatus()
-        if(enemiesDefeated()){return player}
-        else{await combat(player,enemies,firstToStrike,round++)}
     }
+    
+    if(enemiesDefeated()){
+        if(player.class_ === "fighter") player.hitPoints++
+        return player
+    }
+    else{await combat(player,enemies,firstToStrike,round++)}
 }
 
 export default combat
