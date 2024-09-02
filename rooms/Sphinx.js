@@ -8,16 +8,16 @@ async function Sphinx(player){
     let wrongGuesses = 0
     const riddles = [
         {
-            "riddle":"",
-            "answer":""
+            "riddle":"Riddle 1:\nForward, I am heavy; backward, I am not. What am I?",
+            "answer":"ton"
         },
         {
-            "riddle":"",
-            "answer":""
+            "riddle":"Riddle 2:\nWhat has hands but cannot clap?",
+            "answer":"clock"
         },
         {
-            "riddle":"",
-            "answer":""
+            "riddle":"Riddle 3:\nWhat is black when it’s clean and white when it’s dirty?",
+            "answer":"chalkboard"
         },
     ]
 
@@ -68,6 +68,9 @@ async function Sphinx(player){
         .then(async answer => {
             switch(answer.user_command){
                 case "Answer Riddles":
+                    console.log("Important!!!\n When answering type your response as a single word.\n"+
+                        'For example, if your answer was a coin type "coin" and not "a coin".\n' +
+                        "Also note that too many incorrect answers will result in damage dealt to you.\n")
                     await answerRiddles()
                     break
                 case "Check Character":
