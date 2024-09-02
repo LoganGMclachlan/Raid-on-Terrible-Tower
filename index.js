@@ -33,8 +33,9 @@ await sleep(5000)// set to 5000 when not testing
 const roomList = randomiseRoomList(1)
 
 // loops through each room, updating player data
-roomList.map(room => {
-    player = room(player)
+roomList.map(async room => {
+    player = await room(player)
     player = addItem(player)
+    await inquirer.prompt([{message: "Ready to Continue?"}])
     if(player.class_ === "mage") player.mana++
 })

@@ -97,7 +97,6 @@ async function BanditAmbush(player){
     }
     
     await getDecision()
-    console.log("You leave through the door.\n")
     return player
 }
 

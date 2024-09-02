@@ -77,7 +77,6 @@ async function Kennels(player){
     }
     
     await getDecision()
-    await inquirer.prompt([{message: "Continue?"}])
     return player
 }
 
