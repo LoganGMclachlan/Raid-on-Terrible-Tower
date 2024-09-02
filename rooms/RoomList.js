@@ -1,12 +1,14 @@
 import Kennels from "./Kennels.js"
 import WitchesLair from "./WitchesLair.js"
 import BanditAmbush from "./BanditAmbush.js"
+import Sphinx from "./Sphinx.js"
 
 // list of all rooms (exluding start and boss rooms)
 const allRooms = [
     Kennels,
     WitchesLair,
     BanditAmbush,
+    Sphinx,
 ]
 
 // function to return list of randomly selected rooms
