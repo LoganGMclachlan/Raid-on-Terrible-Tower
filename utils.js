@@ -73,3 +73,15 @@ export const getRandomWeapon = () => {
 
 // returns random number between 1 and max
 export const getRandom = max => {return Math.floor(Math.random() * max) + 1}
+
+export const useItem = async player => {
+    // checks player has item to use
+    let consumables = player.items.filter(item => item.type === "consumable")
+    if(consumables.length === 0){
+        console.log("You have no consumable items to use.\n")
+    }else{
+        // prompts player to select item and uses it
+        player = await selectUseItem(player)
+    }
+    return player
+}

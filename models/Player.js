@@ -87,4 +87,11 @@ export default class Player{
             else if(weaponObj.title === "Magic Sword") this.mana += 3
         })
     }
+
+    displayPlayer(){
+        this.getStatus()
+        this.listItems()
+        this.listSpells()
+        console.log(this.weapon.getDetails())
+    }
 }

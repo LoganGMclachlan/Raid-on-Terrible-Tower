@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { addItem } from "../utils.js"
+import { addItem, useItem } from "../utils.js"
 
 async function Sphinx(player){
     console.log("Blocking the exit of this room is large golder Sphinx.\n" +
@@ -74,18 +74,11 @@ async function Sphinx(player){
                     await answerRiddles()
                     break
                 case "Check Character":
-                    player.getStatus()
-                    player.listItems()
-                    player.listSpells()
+                    player.displayPlayer()
                     await getDecision()
                     break
                 case "Use Item":
-                    let consumables = player.items.filter(item => item.type === "consumable")
-                    if(consumables.length === 0){
-                        console.log("You have no consumable items to use.\n")
-                    }else{
-                        player = await selectUseItem(player)
-                    }
+                    player = await useItem(player)
                     await getDecision()
                     break
             }

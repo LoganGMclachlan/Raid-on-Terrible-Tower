@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-import { rollSkillCheck, selectUseItem, addItem } from "../utils.js"
+import { rollSkillCheck, addItem, useItem } from "../utils.js"
 import Enemy from "../models/Enemy.js"
 import combat from "../combat.js"
 
@@ -37,18 +37,11 @@ async function Kennels(player){
                     await stealItem()
                     break
                 case "Check Character":
-                    player.getStatus()
-                    player.listItems()
-                    player.listSpells()
+                    player.displayPlayer()
                     await getDecision()
                     break
                 case "Use Item":
-                    let consumables = player.items.filter(item => item.type === "consumable")
-                    if(consumables.length === 0){
-                        console.log("You have no consumable items to use.\n")
-                    }else{
-                        player = await selectUseItem(player)
-                    }
+                    player = await useItem(player)
                     await getDecision()
                     break
             }

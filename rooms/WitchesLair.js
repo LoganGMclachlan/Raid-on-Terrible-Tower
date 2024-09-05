@@ -1,7 +1,7 @@
 import inquirer from "inquirer"
 import Enemy from "../models/Enemy.js"
 import combat from "../combat.js"
-import { getRandom } from "../utils.js"
+import { getRandom, useItem } from "../utils.js"
 
 async function Kennels(player){
     const witch = [new Enemy("Witch","4","2")]
@@ -17,7 +17,7 @@ async function Kennels(player){
             choices: ["Have a drink",
                 "Refuse the offer",
                 "Attack the woman",
-                "Check Character"]
+                "Check Character","Use Item"]
         }])
         .then(async answer => {
             switch(answer.user_command){
@@ -43,9 +43,11 @@ async function Kennels(player){
                     console.log("Victory! The witch has been slain and can continue your journey.\n")
                     break
                 case "Check Character":
-                    player.getStatus()
-                    player.listItems()
-                    player.listSpells()
+                    player.displayPlayer()
+                    await getDecision()
+                    break
+                case "Use Item":
+                    player = await useItem(player)
                     await getDecision()
                     break
             }

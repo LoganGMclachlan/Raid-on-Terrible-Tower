@@ -1,7 +1,7 @@
 import inquirer from "inquirer"
 import Enemy from "../models/Enemy.js"
 import combat from "../combat.js"
-import { getRandom, getRandomWeapon, rollSkillCheck } from "../utils.js"
+import { getRandom, getRandomWeapon, rollSkillCheck, useItem } from "../utils.js"
 
 async function BanditAmbush(player){
     const bandits = [
@@ -58,18 +58,11 @@ async function BanditAmbush(player){
                     console.log("With the bandits defeated, you can now leave the room.\n")
                     break
                 case "Check Character":
-                    player.getStatus()
-                    player.listItems()
-                    player.listSpells()
+                    player.displayPlayer()
                     await getDecision()
                     break
                 case "Use Item":
-                    let consumables = player.items.filter(item => item.type === "consumable")
-                    if(consumables.length === 0){
-                        console.log("You have no consumable items to use.\n")
-                    }else{
-                        await selectUseItem(player)
-                    }
+                    player = await useItem(player)
                     await getDecision()
                     break
             }
