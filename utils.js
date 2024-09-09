@@ -1,6 +1,6 @@
 import inquirer from "inquirer"
-import { conumables, gear } from "./itemsList"
-import weapons from "./weaponList"
+import { conumables, gear } from "./itemsList.js"
+import weapons from "./weaponList.js"
 
 export const rollSkillCheck = (dc=11) => {
     // difficuly class (dc) guide

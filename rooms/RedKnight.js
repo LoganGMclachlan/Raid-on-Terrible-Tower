@@ -45,6 +45,4 @@ async function RedKnight(player){
     return player
 }
 
-
-
 export default RedKnight

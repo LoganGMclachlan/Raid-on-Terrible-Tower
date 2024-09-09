@@ -1,4 +1,4 @@
-import Item from "./models/Item"
+import Item from "./models/Item.js"
 
 export const conumables = [
     new Item("Apple","Heals 1 hp.","consumable"),

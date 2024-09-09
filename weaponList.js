@@ -1,4 +1,4 @@
-import Weapon from "./models/Weapon"
+import Weapon from "./models/Weapon.js"
 
 const weapons = [
     // new weapon(title:string, damage:int, durability:int),
