@@ -9,7 +9,9 @@ export const conumables = [
 ]
 
 export const gear = [
-    new Item("Shield","Reduces Incoming damage from enemies by 1.","gear")
+    shield
 ]
+
+export const shield = new Item("Shield","Reduces Incoming damage from enemies by 1.","gear")
 
 export const allItems = conumables.concat(gear)

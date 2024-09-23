@@ -22,10 +22,27 @@ async function RedKnight(player){
         }])
         .then(async answer => {
             switch(answer.user_command){
-                //todo: add cases for dialog options
+                case 'Answer "I am the lords servant & I request safe passage." (medium)':
+                    if(rollSkillCheck(11)){
+                        console.log('"Understood." it responds, and moves aside letting you procede.\n')
+                    }
+                    else{
+                        console.log('"You Lie!" it declares, and moves to attack.\n')
+                        player = await combat(player,redKnight)
+                    }
+                    break
+                case 'Answer "I am your superior, now hand me your weapon and let me pass." (difficult)':
+                    if(rollSkillCheck(15)){
+                        console.log('"Understood." it responds, and moves aside letting you procede.\n')
+                    }
+                    else{
+                        console.log('"You Lie!" it declares, and moves to attack.\n')
+                        player = await combat(player,redKnight)
+                    }
+                    break
                 case "Attack the Knight":
                     console.log("You attack the Knight and begin combat.\n")
-                    await combat(player,redKnight,true)
+                    player = await combat(player,redKnight,true)
                     console.log("After defeating the knight, you may take his weapon.\n")
                     player.switchWeapon(getRandomWeapon())
                     break

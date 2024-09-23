@@ -2,6 +2,7 @@ import inquirer from "inquirer"
 import { rollSkillCheck, selectSpell, selectUseItem } from "./utils.js"
 import Weapon from "./models/Weapon.js"
 import process from "node:process"
+import { shield } from "./itemsList.js"
 
 async function combat(player,enemies,firstToStrike=false,round=0){
     const enemiesDefeated = () => {
@@ -159,7 +160,7 @@ async function combat(player,enemies,firstToStrike=false,round=0){
         enemies.map(enemy => {
             if(rollSkillCheck(enemy.attack)){
                 // notifies player when they take damage
-                let damage = enemy.damage - player.checkItem("shield") ? 1 : 0
+                let damage = enemy.damage - (player.items.includes(shield) ? 1 : 0)
                 console.log(`${enemy.name} hits you for ${damage} damage.\n`)
                 player.hitPoints -= damage
             }
